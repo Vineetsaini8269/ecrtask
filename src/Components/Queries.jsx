@@ -70,81 +70,120 @@ export default function Queries() {
   };
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', backgroundColor: '#0f111a', color: '#fff', fontFamily: 'monospace' }}>
-      <Drawer
-        variant="permanent"
-        sx={{
+  <Box sx={{ display: 'flex', height: '100%', backgroundColor: '#0f111a', color: '#fff', fontFamily: 'monospace', width: '100%' }}>
+    
+    {/* Sidebar */}
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: 280,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
           width: 280,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: 280,
-            boxSizing: 'border-box',
-            backgroundColor: '#111827',
-            color: '#fff',
-            paddingTop: 2,
-          },
-        }}
-      > 
-        <Typography variant="h6" sx={{ pl: 2, pb: 1, border: '1px solid #374151',margin:'4px', padding:'5px', display:'flex' , justifyContent:"center" , alignItems:'center' }}>Query Tables</Typography>
-        {navData.map((section, idx) => (
-          <Accordion key={idx} sx={{ bgcolor: '#1f2937', color: '#fff', margin:'4px 2px' }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#fff' , margin:'10px 2px' }} />}>
-              <Typography>{section.label}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {section.items.map(item => (
-                <FormControlLabel
-                  key={item}
-                  control={<Checkbox sx={{ color: '#fff' }} onChange={() => handleCheckboxChange(item)} />}
-                  label={item}
-                />
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </Drawer>
+          boxSizing: 'border-box',
+          backgroundColor: '#111827',
+          color: '#fff',
+          paddingTop: 2,
+        },
+      }}
+    >
+      <Typography variant="h6" sx={{ pl: 2, pb: 1, border: '1px solid #374151', margin: '4px', padding: '5px', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
+        Query Tables
+      </Typography>
+      {navData.map((section, idx) => (
+        <Accordion key={idx} sx={{ bgcolor: '#1f2937', color: '#fff', margin: '4px 2px' }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#fff', margin: '10px 2px' }} />}>
+            <Typography>{section.label}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {section.items.map(item => (
+              <FormControlLabel
+                key={item}
+                control={<Checkbox sx={{ color: '#fff' }} onChange={() => handleCheckboxChange(item)} />}
+                label={item}
+              />
+            ))}
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Drawer>
 
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        <Box sx={{boxShadow:10, display:'flex' , justifyContent:"space-between" , margin:'20px 1px' , padding:'15px' , border: '1px solid #374151', borderRadius:'5px'}}>
-        <Typography variant="h6" sx={{}}>Queries</Typography>
-        <Button variant="contained" startIcon={<PlayArrowIcon />} onClick={runQuery} sx={{ bgcolor: '#10b981', ':hover': { bgcolor: '#059669' } }}>
+    {/* Right content area */}
+    <Box sx={{
+      flexGrow: 1,
+      p: 3,
+      backgroundColor: '#0f111a',
+      maxWidth: '100%',
+      overflow: 'auto'
+    }}>
+      {/* Header + Run Button */}
+      <Box sx={{
+        boxShadow: 10,
+        display: 'flex',
+        justifyContent: "space-between",
+        margin: '20px 1px',
+        padding: '15px',
+        border: '1px solid #374151',
+        borderRadius: '5px'
+      }}>
+        <Typography variant="h6">Queries</Typography>
+        <Button variant="contained" startIcon={<PlayArrowIcon />} onClick={runQuery}
+          sx={{ bgcolor: '#10b981', ':hover': { bgcolor: '#059669' } }}>
           Run Query
         </Button>
-        </Box>
+      </Box>
 
+      {/* Query Editor */}
+      <TextareaAutosize
+        minRows={6}
+        value={query}
+        style={{
+          width: '100%',
+          backgroundColor: '#1f2937',
+          color: 'orange',
+          border: '1px solid #374151',
+          borderRadius: 4,
+          padding: 10,
+          fontFamily: 'monospace',
+          marginBottom: 12,
+          fontSize: '20px'
+        }}
+        onChange={(e) => setQuery(e.target.value)}
+      />
 
-        <TextareaAutosize
-          minRows={6}
-          value={query}
-          style={{ width: '100%', backgroundColor: '#1f2937', color: 'orange', border: '1px solid #374151', borderRadius: 4, padding: 10, fontFamily: 'monospace', marginBottom: 12 , fontSize:'20px' }}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        
-
-        <Paper sx={{ bgcolor: '#111827', color: '#fff', mt: 3, p: 2 , border: '1px solid #374151' }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>Result</Typography>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
-              <TableRow>
-                {result.length > 0 && Object.keys(result[0]).map((key, i) => (
-                  <TableCell key={i} sx={{ color: '#fff', borderBottom: '1px solid #374151' }}>{key}</TableCell>
+      {/* Query Result */}
+      <Paper sx={{
+        bgcolor: '#111827',
+        color: '#fff',
+        mt: 3,
+        p: 2,
+        border: '1px solid #374151',
+        overflowX: 'auto'
+      }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>Result</Typography>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow>
+              {result.length > 0 && Object.keys(result[0]).map((key, i) => (
+                <TableCell key={i} sx={{ color: '#fff', borderBottom: '1px solid #374151' }}>{key}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {result.map((row, i) => (
+              <TableRow key={i}>
+                {Object.values(row).map((val, j) => (
+                  <TableCell key={j} sx={{ color: '#fff', borderBottom: '1px solid #374151' }}>{val ?? 'NULL'}</TableCell>
                 ))}
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {result.map((row, i) => (
-                <TableRow key={i}>
-                  {Object.values(row).map((val, j) => (
-                    <TableCell key={j} sx={{ color: '#fff', borderBottom: '1px solid #374151' }}>{val ?? 'NULL'}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      </Box>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
     </Box>
-  );
+  </Box>
+);
+
 }
 
 

@@ -11,6 +11,8 @@ import FileUploadGuidePage from './Components/FileUploadGuidePage';
 import CommonUserIssuesPage from './Components/CommonUserIssuesPage';
 import SuperAdminPanel from './Components/SuperAdminPanel';
 import Queries from './Components/Queries';
+import NewUi from './Components/NewUi';
+import DuperDashboard from './Components/DuperDashboard';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -73,6 +75,16 @@ function App() {
           <Route path="/quieries" element={
           <>
           <Queries/>
+          </>
+          } />
+          <Route path="/newpage" element={
+          <>
+          <NewUi/>
+          </>
+          } />
+          <Route path="/superdashboard" element={
+          <>
+          <DuperDashboard/>
           </>
           } />
       </Routes>

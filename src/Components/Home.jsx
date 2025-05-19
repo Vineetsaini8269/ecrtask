@@ -15,6 +15,14 @@ const Home = () => {
     const queriesHandler = () => {
         navigate('/quieries'); // ✅ This will now work
     }
+    const newQueriesHandler = () => {
+        navigate('/newpage'); // ✅ This will now work
+        
+    }
+    const SuperDashboardsHandler = () => {
+        navigate('/superdashboard'); // ✅ This will now work
+
+    }
     
     return (
         <div>
@@ -47,6 +55,14 @@ const Home = () => {
                 sx={{margin:'10px'}}
                 onClick={queriesHandler}
                 variant="contained">Quries</Button>
+                <Button
+                sx={{margin:'10px'}}
+                onClick={newQueriesHandler}
+                variant="contained">newqueires</Button>
+                <Button
+                sx={{margin:'10px'}}
+                onClick={SuperDashboardsHandler}
+                variant="contained">final dashboard</Button>
             </div>
         </div>
     );
